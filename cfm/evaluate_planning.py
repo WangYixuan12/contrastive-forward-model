@@ -339,6 +339,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=0)
     args = parser.parse_args()
 
+    mp.set_start_method('spawn')
+
     if args.n_cpu == -1:
         args.n_cpu = mp.cpu_count() // 4
     args.n_trials = math.ceil(args.n_trials // args.n_cpu)

@@ -13,8 +13,8 @@ import sys
 
 from cfm.env.dm_control_env import DMControlEnv
 
-
-def worker(worker_id, start, end):
+def worker(worker_id, start, end, env_args, root):
+# def worker(worker_id, start, end):
     np.random.seed(worker_id+1)
     # Initialize environment
     env = DMControlEnv(**env_args)
@@ -66,6 +66,8 @@ if __name__ == '__main__':
     parser.add_argument('--name', type=str, default='rope', help='Folder name to store trajectories in')
     args = parser.parse_args()
 
+    mp.set_start_method('spawn')
+
     assert args.domain in ['rope', 'cloth'], f'Invalid domain: {args.domain}'
 
     start = time.time()
@@ -91,7 +93,8 @@ if __name__ == '__main__':
     partition_size = math.ceil(n_trajectories / n_chunks)
     args_list = []
     for i in range(n_chunks):
-        args_list.append((i, i * partition_size, min((i + 1) * partition_size, n_trajectories)))
+        args_list.append((i, i * partition_size, min((i + 1) * partition_size, n_trajectories), env_args, root))
+        # args_list.append((i, i * partition_size, min((i + 1) * partition_size, n_trajectories)))
     print('args', args_list)
 
     ps = [mp.Process(target=worker, args=args) for args in args_list]

@@ -1,6 +1,7 @@
 import sys
 import os
-from os.path import join, dirname, basename
+from os.path import join, dirname, basename, exists
+from os import remove
 import glob
 import shutil
 import pickle
@@ -21,8 +22,10 @@ def partition_dataset(root):
     """
     Partitions a folder of runs into train and test set folders
     """
-    os.makedirs(join(root, 'train_data'))
-    os.makedirs(join(root, 'test_data'))
+    if not exists(join(root, 'train_data')):
+        os.makedirs(join(root, 'train_data'))
+    if not exists(join(root, 'test_data')):
+        os.makedirs(join(root, 'test_data'))
 
     runs = glob.glob(join(root, 'run*'))
     threshold = int(len(runs) * 0.8)
@@ -104,6 +107,8 @@ def load_images(root):
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
 
+    if exists(join(root, 'images.hdf5')):
+        remove(join(root, 'images.hdf5'))
     dset = h5py.File(join(root, 'images.hdf5'), 'x')
     dset.create_dataset('images', (len(all_images), 3, 64, 64), 'uint8')
     stored = []
