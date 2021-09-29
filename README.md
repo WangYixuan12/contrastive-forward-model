@@ -3,7 +3,7 @@
 This is code to reproduce experiments for the paper [Learning Predictive Representations for Deformable Objects Using Contrastive Estimation](https://arxiv.org/abs/2003.05436).
 
 ## Installation
-This project was run using Python 3.7.6. All the dependencies are in the `requirements.txt` file and we recommend creating a virtual environment and then installing by `pip install -r requirements.txt`.
+This project was run using Python 3.7.6. All the dependencies are in the `requirements.txt` file and we recommend creating a virtual environment and then installing by `pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html`.
 
 You will also need to install a custom [dm_env package](https://github.com/wilson1yan/dm_env) and a custom [dm_control package](https://github.com/wilson1yan/dm_control/tree/cfm) which has the relevant rope and cloth environments. You **must** use the **cfm** branch in the custom `dm_control` repo. Note that `dm_control` requires the Mujoco simulator to use.  Finally, you will need to install this repo as a pip package: `cd contrastive-forward-model; pip install -e .`
 
